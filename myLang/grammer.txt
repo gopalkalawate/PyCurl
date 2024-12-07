@@ -1,0 +1,135 @@
+Context Free Grammer 
+
+statements : NEWLINE * statement (NEWLINE + statement)* NEWLINE*
+
+statement  : KEYWORD RETURN expr?
+           : KEYWORD BREAK
+           : expr
+
+expr    : KEYWORD:VAR IDENTIFIER EQ expr 
+        :  comp-expr ((KEYWORD:AND | KEYWORD:OR)comp-expr)
+
+comp-expr : NOT comp-expr
+             arith-expr ((EE|LT|GT|LTE|GTE) arith-expr)*
+
+arith-expr : term ((PLUS|MINUS) term)*
+
+term    : factor ((MUL|DIV) factor)*
+
+factor	: (PLUS|MINUS) factor
+				: power
+
+power   : call (POW factor)*
+
+call    : atom(LPAREN (expr (COMMA expr)*)? RPAREN)?
+
+atom 	: INT|FLOAT|STRINGS|IDENTIFIER
+	: LPAREN expr RPAREN
+        : list-expr
+        : if-expr
+        : for-expr 
+        : while-expr
+        : func-def
+
+list-expr : LSQUARE ((COMMA expr)*)? expr RSQUARE
+
+if-expr : KEYWORD:IF expr KEYWORD:THEN 
+          (statement if-expr-b|if-expr-c?) | (NEWLINE statements KEYWORD:END if-expr-b|if-expr-c)
+
+if-expr-b : KEYWORD:ELIF expr KEYWORD:THEN                                (This is for ELIF)
+          (statement if-expr-b|if-expr-c?) | (NEWLINE statements KEYWORD:END if-expr-b|if-expr-c)
+
+if-expr-c : KEYWORD:ELSE statement | (NEWLINE statements KEYWORD:END)
+
+Note instead of just END keyword we will be using '}' to end and at the start of functions or if statements we shall use {
+
+for-expr : KEYWORD:FOR IDENTIFIER EQ expr KEYWORD:TO expr (KEYWORD:STEP expr)? KEYWORD: THEN 
+           statement | (NEWLINE statements KEYWORD:END)
+
+while-expr : KEYWORD:WHILE expr KEYWORD:THEN statement | (NEWLINE statements KEYWORD:END)
+
+func-def : KEYWORD:FUN IDENTIFIER? LPAREN (IDENTIFIER (COMMA IDENTIFIER)*)?RPAREN (ARROW expr) | (NEWLINE statements KEYWORD:END)
+         
+
+
+
+
+NOTE : ? means optional
+
+
+
+
+
+
+
+
+
+___________________________________________________________
+
+how will variables work 
+
+VAR        a         =     10
+keyword identifier equals <expr>
+
+we want the variable assignment to be the least priority hence put them on the top
+
+___________________________________________________________
+How will compariasion operators work 
+
+VAR x = (a==b)
+we want the == operator to be the more priority than variable assignment but less priority than the other operators 
+
+___________________________________________________________
+How will the if statements of operations work
+IF <condition> Then <expression> ELIF <condition> THEN <expression>
+
+
+___________________________________________________________
+How will the order statements work(for and while loops)
+
+FOR <var_name> = <start_value> TO <end_value> THEN <expr>
+
+VAR result = 1
+FOR i=0 TO 10 THEN result = result * i 
+
+
+WHILE <condition> THEN <expr>
+
+___________________________________________________________
+Adding Strings 
+"Hello"
+"Hello \"The sun rises in the east he said\" " : The backslash will skip the " marks 
+"This is how you can escapa backslash \\ "  : The first backslash will help us to skip the second backslash 
+"This is for new line \n"
+
+___________________________________________________________
+Adding Lists
+[1,1,1]
+[1,2,3,4] + 2 = [3,4,5,6]
+[1,2,3] * [1,2,3] = [1,2,3,1,2,3]
+[1,2,3] - 1 = [1,3] #element on the first index is removed
+[1,2,3] - -1 = [1,2] #remove the last element (if we have a negative number)
+[1,2,3] - -2 = [1,3] #remove the second element from the last
+[1,2,3,4] / 0 = 1 #
+[1,2,3,4]/2 = 3
+
+___________________________________________________________
+Built in functions 
+PRINT
+PRINT_RES
+INPUT
+INPUT_INT
+CLEAR
+IS_NUM
+IS_STR
+IS_LIST
+IS_FUN
+APPEND
+POP
+EXTEND
+
+___________________________________________________________
+
+How to look write a multiLine Program
+
+ 

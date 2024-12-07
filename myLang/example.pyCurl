@@ -1,0 +1,13 @@
+PRINT("HELLO WORLD")
+
+VAR a = []
+FUN add(a,b)
+    RETURN a + b
+END
+FOR i = 1 TO 10 THEN 
+    VAR a = a + i
+END
+
+PRINT(a)
+
+PRINT(add(23,34))
