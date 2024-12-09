@@ -1,185 +1,191 @@
 # PyCurl Programming Language
 
-## Detailed Syntax Guide
+## 📘 Overview
 
-### Function Definitions
+PyCurl is a custom programming language designed to provide a unique and intuitive coding experience. Blending elements from various programming paradigms, PyCurl offers a simple yet powerful syntax for developers.
+
+## 🚀 Features
+
+- Custom function definitions
+- Flexible control structures
+- Dynamic typing
+- String and list manipulation
+- Simple print and return statements
+- Unique syntax for loops and conditionals
+
+## 🔧 Installation
+
+### Prerequisites
+- Python 3.7 or higher
+- Terminal/Command Prompt
+
+### Setup Steps
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/gopalkalawate/PyCurl.git
+   cd pycurl
+   ```
+
+2. Ensure Python 3.7+ is installed
+
+## 🖥️ Running Programs
+
+1. Launch the interpreter:
+   ```bash
+   python shell.py
+   ```
+
+2. Run a PyCurl program:
+   ```
+   RUN("yourprogram.pyCurl")
+   ```
+
+## 📝 Language Syntax
+
+### 1. Function Definitions
 
 #### Single-Line Functions
-Single-line functions can be defined using a compact syntax:
 ```
-FUN functionName(parameters) -> expression
-```
-Example:
-```
-FUN singleLineFunction() -> PRINT("Hello, World!")
+FUN singleLineFunction() -> PRINT("Hello")
 FUN add(a,b) -> RETURN a + b
 ```
 
 #### Multi-Line Functions
-Multi-line functions use a more verbose syntax with curly braces or END keyword:
 ```
-FUN functionName(parameters){
-    # Function body
-    STATEMENTS
-    RETURN value
-}
-
-# Alternative syntax
-FUN functionName(parameters)
-    # Function body
-    STATEMENTS
-    RETURN value
-END
-```
-
-Examples:
-```
-# Curly brace style
 FUN multiLineFunction(a,b){
     VAR result = a + b
     PRINT(result)
     RETURN result
-}
-
-# END keyword style
-FUN multiLineFunction(a,b)
-    VAR result = a + b
-    PRINT(result)
-    RETURN result
 END
 ```
 
-### String Manipulation
+### 2. Variable Declaration
+```
+VAR name = "PyCurl"
+VAR number = 42
+VAR list1 = [1, 2, 3]
+```
 
-#### String Creation
+### 3. String Operations
 ```
 VAR str1 = "Hello"
 VAR str2 = "World"
+
+PRINT(str1 + str2)      # Concatenation
+PRINT(str1 * 3)         # Repetition
 ```
 
-#### String Operations
-1. Concatenation
-```
-PRINT(str1 + str2)  # Combines strings
-# Result: "HelloWorld"
-```
-
-2. Repetition
-```
-PRINT(str1 * 3)  # Repeats string
-# Result: "HelloHelloHello"
-```
-
-#### Key String Behaviors
-- Strings can be added together
-- Strings can be multiplied by integers
-- Division and subtraction are not standard operations
-
-### List Manipulation
-
-#### List Creation
+### 4. List Operations
 ```
 VAR list1 = [1, 2, 3, 4]
 VAR list2 = [5, 6]
+
+PRINT(list1 + list2)    # List concatenation
+PRINT(list1 + 7)        # Add element
+PRINT(list1 - 2)        # Remove element
+PRINT(list1 * list2)    # List multiplication
 ```
 
-#### List Operations
-1. List Concatenation
+### 5. Conditional Statements
 ```
-PRINT(list1 + list2)  
-# Result: [1, 2, 3, 4, 5, 6]
-```
-
-2. Adding Elements
-```
-PRINT(list1 + 7)  
-# Result: [1, 2, 3, 4, 7]
-```
-
-3. Removing Elements
-```
-PRINT(list1 - 2)  
-# Likely removes the element at index 2
-# Result: [1, 3, 4]
+FUN checkValue(a,b){
+    IF a == b THEN
+        PRINT("Equal")
+    ELSE IF a > b THEN
+        PRINT("First larger")
+    ELSE
+        PRINT("Second larger")
+    END
+}
 ```
 
-4. List Multiplication
+### 6. Loops
 ```
-PRINT(list1 * list2)  
-# Concatenates lists
-# Result: [1, 2, 3, 4, 5, 6]
-```
-
-5. Indexing
-```
-PRINT(list1 / 2)  
-# Likely returns element at index 2
-# Result: 3
-```
-
-### Control Structures
-
-#### Conditional Statements
-```
-IF condition THEN
-    # Code block
-ELSE IF another_condition THEN
-    # Another code block
-ELSE
-    # Default block
-END
-```
-
-#### Loops
-```
-# Range-based FOR loop
+# Range-based loop
 FOR i = 1 TO 10 THEN
     PRINT(i)
 END
 
-# Alternative syntax with brackets
+# Bracket-based loop
 FOR i = 1 TO 10 {
     PRINT(i)
 }
 
-# WITH STEP
+# Loop with step
 FOR i = 1 TO 10 STEP 2 {
     PRINT(i)
 }
 ```
 
-### Variable Declaration
-```
-VAR variableName = value
-```
+## 📋 Example Program
 
-### Comments
 ```
-# This is a single-line comment
-```
-
-## Important Notes
-- Language syntax is custom and may differ from standard programming languages
-- Some operations (like list division) might have unique interpretations
-- Error handling and precise behavior may vary
-
-## Example Program
-```
-FUN exampleProgram()
+FUN mainProgram(){
     VAR greeting = "Hello"
-    VAR names = ["Alice", "Bob"]
+    VAR names = ["Alice", "Bob", "Charlie"]
     
-    FOR i = 0 TO LEN(names)
+    FOR name IN names THEN
         PRINT(greeting + ", " + name)
     END
-END
+}
+
+mainProgram()
 ```
 
-## Planned Features & Roadmap
-- Improved error handling
-- More robust type checking
-- Additional built-in functions
-- Enhanced list and string manipulation
+## 🔍 Language Characteristics
 
-## Contributing
-Interested in improving PyCurl? Check our contribution guidelines!
+- Dynamic typing
+- Flexible function definitions
+- Unique list and string manipulation
+- Simple control structures
+- Interpreted language
+
+## 🚧 Limitations
+
+- Experimental language
+- Limited error handling
+- Performance may vary
+- Not suitable for production environments
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
+
+## 📜 License
+
+Distributed under the MIT License.
+
+## 📞 Contact
+
+Your Name - kalawategopal25@gmail.com
+
+Project Link: [https://github.com/yourusername/pycurl](https://github.com/gopalkalawate/PyCurl)
+
+## 🗺️ Roadmap
+
+- Enhance error handling
+- Add more built-in functions
+- Improve performance
+- Develop standard library
+- Create comprehensive documentation
+
+## 🔬 Technical Details
+
+- Interpreter written in Python
+- Custom parsing and execution engine
+- Supports basic programming constructs
+- Extensible design for future improvements
+
+## 🎓 Learning Resources
+
+- Syntax Guide
+- Example Programs
+- Community Forums
+- Contribution Guidelines
+
+**Happy Coding with PyCurl!** 🐍✨
