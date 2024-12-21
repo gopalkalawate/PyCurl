@@ -123,7 +123,7 @@ TT_NEWLINE		= 'NEWLINE'
 TT_EOF	=  'EOF'
 
 KEYWORDS = [
-	'VAR','AND','OR','NOT','IF','ELIF','ELSE','THEN','FOR','TO','STEP','WHILE','FUN','END','{','}','CONTINUE','RETURN','BREAK'
+	'VAR','AND','OR','NOT','IF','ELIF','ELSE','THEN','FOR','TO','STEP','WHILE','FUN','END','{','}','CONTINUE','RETURN','BREAK','{','}'
 ]
 
 class Token:
@@ -175,7 +175,7 @@ class Lexer:
 				self.advance()
 			elif self.current_char in DIGITS:
 				tokens.append(self.make_number())
-			elif self.current_char in LETTERS:
+			elif self.current_char in LETTERS or self.current_char == '{' or self.current_char=='}':
 				tokens.append(self.make_identifier())
 			elif self.current_char == '"':
 				tokens.append(self.make_string())
@@ -193,9 +193,6 @@ class Lexer:
 			elif self.current_char == '^':
 				tokens.append(Token(TT_POW, pos_start=self.pos))
 				self.advance()
-			# elif self.current_char == '=':
-			# 	tokens.append(Token(TT_EQ, pos_start=self.pos))
-			# 	self.advance() # no need of this now
 			elif self.current_char == '(':
 				tokens.append(Token(TT_LPAREN, pos_start=self.pos))
 				self.advance()
@@ -252,6 +249,13 @@ class Lexer:
 	def make_identifier(self):
 		id_str = ''
 		pos_start = self.pos.copy()
+
+		if self.current_char == '{':
+			self.advance()
+			return Token(TT_KEYWORD,'{',pos_start,self.pos)
+		if self.current_char == '}':
+			self.advance()
+			return Token(TT_KEYWORD,'}',pos_start,self.pos)
 
 		while self.current_char!=None and self.current_char in LETTERS_DIGITS + '_':
 			id_str += self.current_char
@@ -348,8 +352,8 @@ class Lexer:
 		
 		while self.current_char != '\n':
 			self.advance()
-
-		self.advance()	 
+		if self.current_char != None:
+			self.advance()	 
 
 #######################################
 # NODES
@@ -989,7 +993,7 @@ class Parser:
 		else:
 			step_value = None
 
-		if not self.current_tok.matches(TT_KEYWORD, 'THEN'):
+		if not (self.current_tok.matches(TT_KEYWORD, 'THEN') or self.current_tok.matches(TT_KEYWORD,'{')):
 			return res.failure(InvalidSyntaxError(
 				self.current_tok.pos_start, self.current_tok.pos_end,
 				f"Expected 'THEN'"
@@ -1005,7 +1009,7 @@ class Parser:
 			body = res.register(self.statements())
 			if res.error : return res
 
-			if not self.current_tok.matches(TT_KEYWORD,'END'):
+			if not (self.current_tok.matches(TT_KEYWORD,'END') or self.current_tok.matches(TT_KEYWORD,'}')):
 				return res.failure(InvalidSyntaxError(
 					self.current_tok.pos_start,self.current_tok.pos_end,"Expected an end or an }"
 				))
@@ -1033,7 +1037,7 @@ class Parser:
 		condition = res.register(self.expr())
 		if res.error : return res
 
-		if not self.current_tok.matches(TT_KEYWORD,'THEN'):
+		if not (self.current_tok.matches(TT_KEYWORD,'THEN') or self.current_tok.matches(TT_KEYWORD,'{')):
 			return res.failure(InvalidSyntaxError(
 				self.current_tok.pos_start,self.current_tok.pos_end,f"Expected 'THEN'"
 			))
@@ -1048,9 +1052,9 @@ class Parser:
 			body = res.register(self.statements())
 			if res.error : return res
 
-			if not self.current_tok.matches(TT_KEYWORD,'END'):
+			if not (self.current_tok.matches(TT_KEYWORD,'END') or self.current_tok.matches(TT_KEYWORD,'}')):
 				return res.failure(InvalidSyntaxError(
-					self.current_tok.pos_start,self.current_tok.pos_end,"Expected  END"
+					self.current_tok.pos_start,self.current_tok.pos_end,"Expected  END or }"
 				))
 			
 			res.register_advancement()
@@ -1199,9 +1203,9 @@ class Parser:
 				True
 			))
 		
-		if self.current_tok.type != TT_NEWLINE:
+		if not (self.current_tok.type == TT_NEWLINE or self.current_tok.matches(TT_KEYWORD,'{')):
 			return res.failure(InvalidSyntaxError(
-				self.pos_start,self.pos_end,"Expected -> or NEWLINE"
+				self.current_tok.pos_start,self.current_tok.pos_end,"Expected -> or NEWLINE"
 			))
 		
 		res.register_advancement()
@@ -1210,7 +1214,7 @@ class Parser:
 		body = res.register(self.statements())
 		if res.error : return res
 
-		if not self.current_tok.matches(TT_KEYWORD,'END'):
+		if not (self.current_tok.matches(TT_KEYWORD,'END') or self.current_tok.matches(TT_KEYWORD,'}')) :
 			return res.failure(InvalidSyntaxError(
 				self.current_tok.pos_start,self.current_tok.pos_end,"Expected an End KeyWord"
 			))
